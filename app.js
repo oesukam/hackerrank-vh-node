@@ -9,6 +9,7 @@ const index = require('./routes/index');
 const eraseEvents = require('./routes/eraseEvents');
 const events = require('./routes/events');
 const actor = require('./routes/actor');
+
 require('./db');
 
 const app = express();

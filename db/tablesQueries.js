@@ -22,8 +22,7 @@ exports.createActorsTable = `
   CREATE TABLE IF NOT EXISTS actors (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     login TEXT,
-    type TEXT,
-    avatar TEXT
+    avatar_url TEXT
   )
 `;
 
