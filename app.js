@@ -9,6 +9,7 @@ const index = require('./routes/index');
 const eraseEvents = require('./routes/eraseEvents');
 const events = require('./routes/events');
 const actor = require('./routes/actor');
+require('./db');
 
 const app = express();
 
@@ -23,7 +24,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
 
 app.use('/', index);
 app.use('/erase', eraseEvents);
