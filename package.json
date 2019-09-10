@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "prestart": "npm install",
+    "prestart": "npm install && npm run db:create-tables",
     "start": "node ./bin/www",
     "dev": "nodemon node ./bin/www",
     "pretest": "npm install",
