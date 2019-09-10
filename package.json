@@ -5,6 +5,7 @@
   "scripts": {
     "prestart": "npm install",
     "start": "node ./bin/www",
+    "dev": "nodemon node ./bin/www",
     "pretest": "npm install",
     "test": "./node_modules/.bin/mocha test",
     "db:create-tables": "node ./db/createTables"
@@ -28,5 +29,8 @@
     "morgan": "~1.8.1",
     "serve-favicon": "~2.4.2",
     "sqlite3": "^3.1.9"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.2"
   }
 }
