@@ -1,42 +1,14 @@
+const getAllEvents = () => {};
 
-var getAllEvents = () => {
+const addEvent = () => {};
 
-};
+const getByActor = () => {};
 
-var addEvent = () => {
-
-};
-
-
-var getByActor = () => {
-
-};
-
-
-var eraseEvents = () => {
-
-};
+const eraseEvents = () => {};
 
 module.exports = {
-	getAllEvents: getAllEvents,
-	addEvent: addEvent,
-	getByActor: getByActor,
-	eraseEvents: eraseEvents
+  getAllEvents: getAllEvents,
+  addEvent: addEvent,
+  getByActor: getByActor,
+  eraseEvents: eraseEvents
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

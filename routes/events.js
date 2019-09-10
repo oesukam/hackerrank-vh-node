@@ -1,7 +1,6 @@
-var express = require('express');
-var router = express.Router();
+const { Router } = require('express');
+const router = Router();
 
 // Routes related to event
-
 
 module.exports = router;

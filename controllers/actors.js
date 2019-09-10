@@ -1,36 +1,11 @@
+const getAllActors = () => {};
 
-var getAllActors = () => {
-	
-};
+const updateActor = () => {};
 
-var updateActor = () => {
-
-};
-
-var getStreak = () => {
-
-};
-
+const getStreak = () => {};
 
 module.exports = {
-	updateActor: updateActor,
-	getAllActors: getAllActors,
-	getStreak: getStreak
+  updateActor: updateActor,
+  getAllActors: getAllActors,
+  getStreak: getStreak
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
