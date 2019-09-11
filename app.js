@@ -9,6 +9,7 @@ const index = require('./routes/index');
 const eraseEvents = require('./routes/eraseEvents');
 const events = require('./routes/events');
 const actor = require('./routes/actor');
+const joiErrors = require('./middlewares/joiValidator');
 
 require('./db');
 
@@ -30,6 +31,9 @@ app.use('/', index);
 app.use('/erase', eraseEvents);
 app.use('/events', events);
 app.use('/actors', actor);
+
+// Handle joi errors
+app.use(joiErrors());
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

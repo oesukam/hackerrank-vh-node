@@ -12,6 +12,8 @@
   },
   "dependencies": {
     "@babel/core": "^7.6.0",
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@babel/runtime": "^7.6.0",
     "@hapi/joi": "^15.1.1",
     "babel-preset-airbnb": "^4.0.1",
     "bluebird": "^3.5.0",
