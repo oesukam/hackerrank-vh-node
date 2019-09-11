@@ -91,7 +91,49 @@ const addEvent = async (req, res) => {
   return res.json({});
 };
 
-const getByActor = (req, res) => {};
+const getByActor = async (req, res) => {
+  const { actorId } = req.params;
+  const result = await db.all(
+    `
+		SELECT 
+			events.*,
+			actors.login,
+			actors.avatar_url,
+			repos.name,
+			repos.url
+		FROM events
+		JOIN actors on events.actor_id = actors.id
+    JOIN repos on events.repo_id = repos.id
+    WHERE events.actor_id = ?
+	`,
+    [actorId]
+  );
+
+  const data = [];
+  result.forEach(row => {
+    const column = {
+      id: row.id,
+      type: row.type
+    };
+    if (row.actor_id) {
+      column.actor = {
+        id: row.actor_id,
+        login: row.login,
+        avatar_url: row.avatar_url
+      };
+    }
+    if (row.repo_id) {
+      column.repo = {
+        id: row.repo_id,
+        name: row.name,
+        url: row.url
+      };
+    }
+    column.created_at = row.created_at;
+    data.push(column);
+  });
+  return res.json(data || []);
+};
 
 const eraseEvents = (req, res) => {};
 

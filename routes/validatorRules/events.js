@@ -21,3 +21,7 @@ module.exports.addEvent = Joi.object().keys({
     .iso()
     .required()
 });
+
+module.exports.getByActorParams = Joi.object().keys({
+  actorId: Joi.number().required()
+});
