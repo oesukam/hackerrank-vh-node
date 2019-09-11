@@ -88,7 +88,7 @@ const addEvent = async (req, res) => {
     [body.id, body.type, body.actor.id, body.repo.id, body.created_at]
   );
 
-  return res.json({});
+  return res.status(201).json(body);
 };
 
 const getByActor = async (req, res) => {
@@ -135,7 +135,12 @@ const getByActor = async (req, res) => {
   return res.json(data || []);
 };
 
-const eraseEvents = (req, res) => {};
+const eraseEvents = async (req, res) => {
+  await db.run('DELETE FROM events');
+  await db.run('DELETE FROM actors');
+  await db.run('DELETE FROM repos');
+  return res.json([]);
+};
 
 module.exports = {
   getAllEvents: getAllEvents,

@@ -8,11 +8,10 @@ const db = new sqlite3.Database('./db/db.sqlite3', err => {
   }
 });
 
-class DB {
-  db = db;
-  run(sql, params = []) {
+const DB = {
+  run: (sql, params = []) => {
     return new Promise((resolve, reject) => {
-      this.db.get(sql, params, (err, result) => {
+      db.get(sql, params, (err, result) => {
         if (err) {
           console.log('Error running sql: ' + sql);
           console.log(err);
@@ -22,11 +21,11 @@ class DB {
         }
       });
     });
-  }
+  },
 
-  get(sql, params = []) {
+  get: (sql, params = []) => {
     return new Promise((resolve, reject) => {
-      this.db.get(sql, params, (err, result) => {
+      db.get(sql, params, (err, result) => {
         if (err) {
           console.log('Error running sql: ' + sql);
           console.log(err);
@@ -36,11 +35,11 @@ class DB {
         }
       });
     });
-  }
+  },
 
-  all(sql, params = []) {
+  all: (sql, params = []) => {
     return new Promise((resolve, reject) => {
-      this.db.all(sql, params, (err, rows) => {
+      db.all(sql, params, (err, rows) => {
         if (err) {
           console.log('Error running sql: ' + sql);
           console.log(err);
@@ -51,6 +50,6 @@ class DB {
       });
     });
   }
-}
+};
 
-module.exports = new DB();
+module.exports = DB;
