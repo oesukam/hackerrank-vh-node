@@ -1,8 +1,10 @@
 const sqlite3 = require('sqlite3').verbose();
 const tables = require('./tablesQueries');
 
+const dbName = process.env.NODE_ENV === 'test' ? 'db_test' : 'DB';
+
 const dropTables = () => {
-  const db = new sqlite3.Database('./db/db.sqlite3', err => {
+  const db = new sqlite3.Database(`./db/${dbName}.sqlite3`, err => {
     if (err) {
       console.log('Could not connect to database', err);
       process.exit(1);
