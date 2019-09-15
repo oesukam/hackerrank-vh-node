@@ -10,8 +10,9 @@ const getAllEvents = async (req, res) => {
 			repos.name,
 			repos.url
 		FROM events
-		JOIN actors on events.actor_id = actors.id
-		JOIN repos on events.repo_id = repos.id
+		INNER JOIN actors on events.actor_id = actors.id
+    INNER JOIN repos on events.repo_id = repos.id
+    ORDER BY events.id ASC
 	`
   );
 
@@ -73,8 +74,8 @@ const addEvent = async (req, res) => {
     body.repo.id
   ]);
   if (!foundRepo) {
-    body.repo.name = foundRepo ? foundRepo.name : body.actor.name;
-    body.repo.url = foundRepo ? foundRepo.url : body.actor.url;
+    body.repo.name = foundRepo ? foundRepo.name : body.repo.name;
+    body.repo.url = foundRepo ? foundRepo.url : body.repo.url;
 
     await db.run('INSERT INTO repos (id, name, url) VALUES (?, ?, ?)', [
       body.repo.id,
@@ -102,11 +103,12 @@ const getByActor = async (req, res) => {
 			repos.name,
 			repos.url
 		FROM events
-		JOIN actors on events.actor_id = actors.id
-    JOIN repos on events.repo_id = repos.id
-    WHERE events.actor_id = ?
+		INNER JOIN actors on events.actor_id = actors.id
+    INNER JOIN repos on events.repo_id = repos.id
+    WHERE actors.id = ? AND events.actor_id = ?
+    ORDER BY events.id DESC
 	`,
-    [actorId]
+    [actorId, actorId]
   );
 
   const data = [];
