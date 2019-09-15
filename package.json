@@ -7,7 +7,7 @@
     "start": "babel-node ./bin/www",
     "dev": "babel-watch ./bin/www",
     "pretest": "npm install",
-    "test": "./node_modules/.bin/mocha test",
+    "test": "npm run db:create-tables && ./node_modules/.bin/mocha test",
     "db:create-tables": "node ./db/createTables"
   },
   "dependencies": {
