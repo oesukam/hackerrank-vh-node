@@ -1,9 +1,21 @@
 const db = require('../db');
+const { orderBy } = require('lodash');
+const moment = require('moment');
+const getStreakInfo = require('../helpers/getStreakInfo');
 
 const getAllActors = async (req, res) => {
-  const result = await db.all(`
-		SELECT * FROM actors 
+  let result = await db.all(`
+    SELECT actors.*, COUNT(events.id) total_events, events.created_at FROM actors
+    INNER JOIN events ON events.actor_id = actors.id
+    GROUP BY actors.id
+    ORDER BY total_events DESC, created_at DESC, login DESC;
 	`);
+
+  result = result.map(item => {
+    delete item.total_events;
+    delete item.created_at;
+    return item;
+  });
 
   return res.json(result);
 };
@@ -21,72 +33,50 @@ const updateActor = async (req, res) => {
   if (!foundActor) {
     return res.status(404).json({ message: 'Actor not found ' });
   }
-  await db.run(
+  const updatedActor = await db.run(
     `
     UPDATE actors
     SET login = ?, avatar_url = ?
+    WHERE id = ?
   `,
-    [body.login || foundActor.login, body.avatar_url || foundActor.avatar_url]
+    [
+      body.login || foundActor.login,
+      body.avatar_url || foundActor.avatar_url,
+      body.id
+    ]
   );
 
   return res.json({});
 };
 
-const getStreak = (req, res) => {
-  const actors = [
-    {
-      id: 4276597,
-      login: 'iholloway',
-      avatar_url: 'https://avatars.com/4276597'
-    },
-    {
-      id: 2917996,
-      login: 'oscarschmidt',
-      avatar_url: 'https://avatars.com/2917996'
-    },
-    {
-      id: 2790311,
-      login: 'daniel33',
-      avatar_url: 'https://avatars.com/2790311'
-    },
-    {
-      id: 2222918,
-      login: 'xnguyen',
-      avatar_url: 'https://avatars.com/2222918'
-    },
-    {
-      id: 2907782,
-      login: 'eric66',
-      avatar_url: 'https://avatars.com/2907782'
-    },
-    {
-      id: 3648056,
-      login: 'ysims',
-      avatar_url: 'https://avatars.com/3648056'
-    },
-    {
-      id: 4864659,
-      login: 'katrinaallen',
-      avatar_url: 'https://avatars.com/4864659'
-    },
-    {
-      id: 4949434,
-      login: 'millerlarry',
-      avatar_url: 'https://avatars.com/4949434'
-    },
-    {
-      id: 3698252,
-      login: 'daniel51',
-      avatar_url: 'https://avatars.com/3698252'
-    },
-    {
-      id: 3466404,
-      login: 'khunt',
-      avatar_url: 'https://avatars.com/3466404'
-    }
-  ];
+const getStreak = async (req, res) => {
+  /*
+  SELECT actors.*, COUNT(events.id) total_events, events.created_at FROM actors
+    JOIN events ON events.actor_id = actors.id
+    GROUP BY actors.id
+    ORDER BY total_events
+  */
+  let result = await db.all(`
+    SELECT events.*, actors.login, actors.avatar_url FROM actors
+    JOIN events ON events.actor_id = actors.id
+    ORDER BY created_at
+	`);
 
-  return res.json(actors);
+  // result = orderBy(result, ['created_at', 'login'], ['desc', 'asc']);
+  result = orderBy(
+    getStreakInfo(result),
+    ['maxStreak', 'dateLastEvent', 'login'],
+    ['desc', 'desc', 'asc']
+  );
+  const cleanResult = result.map(item => {
+    delete item.currentStreak;
+    delete item.maxStreak;
+    delete item.dateLastEvent;
+    delete item.dateLatestEvent;
+    return item;
+  });
+
+  return res.json(cleanResult);
 };
 
 module.exports = {
